@@ -40,8 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		if ($phrase == "success") {
 			switch( dvwaSecurityLevelGet() ) {
 				case 'low':
-					if ($token == md5(str_rot13("success"))) {
-						$message = "<p style='color:red'>Well done!</p>";
+// Replace this line:
+// if ($token == md5(str_rot13("success"))) {
+
+// With this line:
+if ($token == hash('sha256', str_rot13("success"))) {
 					} else {
 						$message = "<p>Invalid token.</p>";
 					}

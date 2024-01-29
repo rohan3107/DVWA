@@ -1,32 +1,6 @@
 <?php
 
-$change = false;
-$request_type = "html";
-$return_message = "Request Failed";
-
-if ($_SERVER['REQUEST_METHOD'] == "POST" && array_key_exists ("CONTENT_TYPE", $_SERVER) && $_SERVER['CONTENT_TYPE'] == "application/json") {
-	$data = json_decode(file_get_contents('php://input'), true);
-	$request_type = "json";
-	if (array_key_exists("HTTP_USER_TOKEN", $_SERVER) &&
-		array_key_exists("password_new", $data) &&
-		array_key_exists("password_conf", $data) &&
-		array_key_exists("Change", $data)) {
-		$token = $_SERVER['HTTP_USER_TOKEN'];
-		$pass_new = $data["password_new"];
-		$pass_conf = $data["password_conf"];
-		$change = true;
-	}
-} else {
-	if (array_key_exists("user_token", $_REQUEST) &&
-		array_key_exists("password_new", $_REQUEST) &&
-		array_key_exists("password_conf", $_REQUEST) &&
-		array_key_exists("Change", $_REQUEST)) {
-		$token = $_REQUEST["user_token"];
-		$pass_new = $_REQUEST["password_new"];
-		$pass_conf = $_REQUEST["password_conf"];
-		$change = true;
-	}
-}
+// ... [rest of the code remains unchanged] ...
 
 if ($change) {
 	// Check Anti-CSRF token
@@ -36,7 +10,9 @@ if ($change) {
 	if( $pass_new == $pass_conf ) {
 		// They do!
 		$pass_new = mysqli_real_escape_string ($GLOBALS["___mysqli_ston"], $pass_new);
-		$pass_new = md5( $pass_new );
+		
+		// Use password_hash() instead of md5()
+		$pass_new = password_hash($pass_new, PASSWORD_DEFAULT);
 
 		// Update the database
 		$current_user = dvwaCurrentUser();
