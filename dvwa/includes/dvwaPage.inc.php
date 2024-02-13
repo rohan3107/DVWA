@@ -45,6 +45,13 @@ $secure = false;
 $domain = parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST);
 
 session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'domain' => '',
+    'secure' => true, // Added secure flag
+    'httponly' => true,
+    'samesite' => 'Lax'
+]);
 	'lifetime' => $maxlifetime,
 	'path' => '/',
 	'domain' => $domain,
@@ -168,7 +175,7 @@ function dvwaSecurityLevelSet( $pSecurityLevel ) {
 		$httponly = false;
 	}
 
-	setcookie( 'security', $pSecurityLevel, 0, "/", "", false, $httponly );
+	setcookie( 'security', $pSecurityLevel, 0, "/", "", true, $httponly );
 }
 
 function dvwaLocaleGet() {	
@@ -506,7 +513,7 @@ function dvwaDatabaseConnect() {
 
 	if( $DBMS == 'MySQL' ) {
 		if( !@($GLOBALS["___mysqli_ston"] = mysqli_connect( $_DVWA[ 'db_server' ],  $_DVWA[ 'db_user' ],  $_DVWA[ 'db_password' ], "", $_DVWA[ 'db_port' ] ))
-		|| !@((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE " . $_DVWA[ 'db_database' ])) ) {
+		|| !@((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE " . mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_DVWA['db_database']))) ) {
 			//die( $DBMS_connError );
 			dvwaLogout();
 			dvwaMessagePush( 'Unable to connect to the database.<br />' . mysqli_error($GLOBALS["___mysqli_ston"]));
@@ -586,7 +593,7 @@ function generateSessionToken() {  # Generate a brand new (CSRF) token
 	if( isset( $_SESSION[ 'session_token' ] ) ) {
 		destroySessionToken();
 	}
-	$_SESSION[ 'session_token' ] = md5( uniqid() );
+$_SESSION['session_token'] = hash('sha256', uniqid(mt_rand(), true));
 }
 
 function destroySessionToken() {  # Destroy any session with the name 'session_token'

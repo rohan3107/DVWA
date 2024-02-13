@@ -14,10 +14,9 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 
 	// Where are we going to be writing to?
 	$target_path   = DVWA_WEB_PAGE_TO_ROOT . 'hackable/uploads/';
-	//$target_file   = basename( $uploaded_name, '.' . $uploaded_ext ) . '-';
-	$target_file   =  md5( uniqid() . $uploaded_name ) . '.' . $uploaded_ext;
+	$target_file   =  hash('sha256', uniqid() . $uploaded_name) . '.' . $uploaded_ext;
 	$temp_file     = ( ( ini_get( 'upload_tmp_dir' ) == '' ) ? ( sys_get_temp_dir() ) : ( ini_get( 'upload_tmp_dir' ) ) );
-	$temp_file    .= DIRECTORY_SEPARATOR . md5( uniqid() . $uploaded_name ) . '.' . $uploaded_ext;
+	$temp_file    .= DIRECTORY_SEPARATOR . hash('sha256', uniqid() . $uploaded_name) . '.' . $uploaded_ext;
 
 	// Is it an image?
 	if( ( strtolower( $uploaded_ext ) == 'jpg' || strtolower( $uploaded_ext ) == 'jpeg' || strtolower( $uploaded_ext ) == 'png' ) &&

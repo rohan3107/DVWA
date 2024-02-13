@@ -13,7 +13,7 @@ if( isset( $_GET[ 'Login' ] ) ) {
 	$pass = $_GET[ 'password' ];
 	$pass = stripslashes( $pass );
 	$pass = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
-	$pass = md5( $pass );
+	$pass = hash('sha256', $pass);
 
 	// Check database
 	$query  = "SELECT * FROM `users` WHERE user = '$user' AND password = '$pass';";
@@ -30,7 +30,7 @@ if( isset( $_GET[ 'Login' ] ) ) {
 	}
 	else {
 		// Login failed
-		sleep( rand( 0, 3 ) );
+		sleep( mt_rand( 0, 3 ) );
 		$html .= "<pre><br />Username and/or password incorrect.</pre>";
 	}
 

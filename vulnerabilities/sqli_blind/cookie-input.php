@@ -9,7 +9,7 @@ $page = dvwaPageNewGrab();
 $page[ 'title' ] = 'Blind SQL Injection Cookie Input' . $page[ 'title_separator' ].$page[ 'title' ];
 
 if( isset( $_POST[ 'id' ] ) ) {
-	setcookie( 'id', $_POST[ 'id' ]);
+	setcookie( 'id', $_POST[ 'id' ], 0, '', '', isset($_SERVER['HTTPS']), true );
 	$page[ 'body' ] .= "Cookie ID set!<br /><br /><br />";
 	$page[ 'body' ] .= "<script>window.opener.location.reload(true);</script>";
 }
@@ -27,5 +27,3 @@ $page[ 'body' ] .= "
 dvwaSourceHtmlEcho( $page );
 
 ?>
-
-

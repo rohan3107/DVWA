@@ -6,7 +6,7 @@ if( isset( $_GET[ 'Login' ] ) ) {
 
 	// Get password
 	$pass = $_GET[ 'password' ];
-	$pass = md5( $pass );
+	$pass = hash('sha256', $pass);
 
 	// Check the database
 	$query  = "SELECT * FROM `users` WHERE user = '$user' AND password = '$pass';";

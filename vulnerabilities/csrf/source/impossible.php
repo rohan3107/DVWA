@@ -12,7 +12,7 @@ if( isset( $_GET[ 'Change' ] ) ) {
 	// Sanitise current password input
 	$pass_curr = stripslashes( $pass_curr );
 	$pass_curr = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_curr ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
-	$pass_curr = md5( $pass_curr );
+	$pass_curr = hash('sha256', $pass_curr);
 
 	// Check that the current password is correct
 	$data = $db->prepare( 'SELECT password FROM users WHERE user = (:user) AND password = (:password) LIMIT 1;' );
@@ -26,7 +26,7 @@ if( isset( $_GET[ 'Change' ] ) ) {
 		// It does!
 		$pass_new = stripslashes( $pass_new );
 		$pass_new = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
-		$pass_new = md5( $pass_new );
+		$pass_new = hash('sha256', $pass_new);
 
 		// Update database with new password
 		$data = $db->prepare( 'UPDATE users SET password = (:password) WHERE user = (:user);' );

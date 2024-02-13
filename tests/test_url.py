@@ -29,7 +29,7 @@ def check_once(url):
             'User-Agent':
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
         }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, verify=True)
     except requests.exceptions.ConnectionError:
         return False, -1
     return response.ok, response.status_code
@@ -54,7 +54,7 @@ def test_url():
     
     ignore_urls = [
         "https://wpscan.com/", # Cloudflare doesn't like GitHub checking it
-        "http://www.w3.org/TR/html4/loose.dtd", # Don't need to check the DTD
+        "https://www.w3.org/TR/html4/loose.dtd", # Don't need to check the DTD
         "https://www.vmware.com/" # Throwing a 403 for some reason, but can't see it going anywhere
     ]
     all_urls = []
@@ -85,3 +85,4 @@ def test_url():
         print("%s\t%d" % (url, status_code))
 
     assert len(broken_urls) == 0, "Broken URLs Detected."
+

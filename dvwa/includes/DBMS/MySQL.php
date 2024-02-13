@@ -34,7 +34,8 @@ dvwaMessagePush( "Database has been created." );
 
 
 // Create table 'users'
-if( !@((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE " . $_DVWA[ 'db_database' ])) ) {
+if( !@((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE " . mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_DVWA['db_database'])))) ) {
+
 	dvwaMessagePush( 'Could not connect to database.' );
 	dvwaPageReload();
 }

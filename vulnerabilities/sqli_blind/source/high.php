@@ -48,8 +48,8 @@ if( isset( $_COOKIE[ 'id' ] ) ) {
 	}
 	else {
 		// Might sleep a random amount
-		if( rand( 0, 5 ) == 3 ) {
-			sleep( rand( 2, 4 ) );
+		if( mt_rand( 0, 5 ) == 3 ) {
+			sleep( mt_rand( 2, 4 ) );
 		}
 
 		// User wasn't found, so the page wasn't!

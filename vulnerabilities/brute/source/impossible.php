@@ -13,7 +13,7 @@ if( isset( $_POST[ 'Login' ] ) && isset ($_POST['username']) && isset ($_POST['p
 	$pass = $_POST[ 'password' ];
 	$pass = stripslashes( $pass );
 	$pass = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
-	$pass = md5( $pass );
+	$pass = password_hash($pass, PASSWORD_DEFAULT);
 
 	// Default values
 	$total_failed_login = 3;
@@ -79,7 +79,7 @@ if( isset( $_POST[ 'Login' ] ) && isset ($_POST['username']) && isset ($_POST['p
 		$data->execute();
 	} else {
 		// Login failed
-		sleep( rand( 2, 4 ) );
+		sleep( random_int( 2, 4 ) );
 
 		// Give the user some feedback
 		$html .= "<pre><br />Username and/or password incorrect.<br /><br/>Alternative, the account has been locked because of too many failed logins.<br />If this is the case, <em>please try again in {$lockout_time} minutes</em>.</pre>";

@@ -16,7 +16,7 @@ if( isset( $_POST[ 'Login' ] ) ) {
 	$pass = $_POST[ 'password' ];
 	$pass = stripslashes( $pass );
 	$pass = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $pass);
-	$pass = md5( $pass );
+	$pass = hash('sha256', $pass);
 
 	$query  = "SELECT * FROM `users` WHERE user='$user' AND password='$pass';";
 	$result = @mysqli_query($GLOBALS["___mysqli_ston"], $query) or die( '<pre>'.  mysqli_connect_error() . '.<br />Try <a href="setup.php">installing again</a>.</pre>' );
@@ -52,3 +52,4 @@ $page[ 'body' ] .= "
 dvwaSourceHtmlEcho( $page );
 
 ?>
+
