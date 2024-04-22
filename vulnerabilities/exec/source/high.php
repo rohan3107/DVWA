@@ -4,21 +4,8 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 	// Get input
 	$target = trim($_REQUEST[ 'ip' ]);
 
-	// Set blacklist
-	$substitutions = array(
-		'&'  => '',
-		';'  => '',
-		'| ' => '',
-		'-'  => '',
-		'$'  => '',
-		'('  => '',
-		')'  => '',
-		'`'  => '',
-		'||' => '',
-	);
-
-	// Remove any of the characters in the array (blacklist).
-	$target = str_replace( array_keys( $substitutions ), $substitutions, $target );
+	// Sanitize the target input
+	$target = escapeshellarg($target);
 
 	// Determine OS and execute the ping command.
 	if( stristr( php_uname( 's' ), 'Windows NT' ) ) {

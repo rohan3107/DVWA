@@ -37,24 +37,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		$phrase = $_POST['phrase'];
 		$token = $_POST['token'];
 
-		if ($phrase == "success") {
+		if (hash_equals($phrase, "success")) {
 			switch( dvwaSecurityLevelGet() ) {
 				case 'low':
-					if ($token == md5(str_rot13("success"))) {
+					if (hash_equals($token, md5(str_rot13("success")))) {
 						$message = "<p style='color:red'>Well done!</p>";
 					} else {
 						$message = "<p>Invalid token.</p>";
 					}
 					break;
 				case 'medium':
-					if ($token == strrev("XXsuccessXX")) {
+					if (hash_equals($token, strrev("XXsuccessXX"))) {
 						$message = "<p style='color:red'>Well done!</p>";
 					} else {
 						$message = "<p>Invalid token.</p>";
 					}
 					break;
 				case 'high':
-					if ($token == hash("sha256", hash("sha256", "XX" . strrev("success")) . "ZZ")) {
+					if (hash_equals($token, hash("sha256", hash("sha256", "XX" . strrev("success")) . "ZZ"))) {
 						$message = "<p style='color:red'>Well done!</p>";
 					} else {
 						$message = "<p>Invalid token.</p>";
@@ -121,3 +121,4 @@ $page[ 'body' ] .= "
 dvwaHtmlEcho( $page );
 
 ?>
+

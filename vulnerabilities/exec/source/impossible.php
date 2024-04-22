@@ -8,13 +8,10 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 	$target = $_REQUEST[ 'ip' ];
 	$target = stripslashes( $target );
 
-	// Split the IP into 4 octects
-	$octet = explode( ".", $target );
-
-	// Check IF each octet is an integer
-	if( ( is_numeric( $octet[0] ) ) && ( is_numeric( $octet[1] ) ) && ( is_numeric( $octet[2] ) ) && ( is_numeric( $octet[3] ) ) && ( sizeof( $octet ) == 4 ) ) {
-		// If all 4 octets are int's put the IP back together.
-		$target = $octet[0] . '.' . $octet[1] . '.' . $octet[2] . '.' . $octet[3];
+	// Validate the IP address
+	if (filter_var($target, FILTER_VALIDATE_IP)) {
+		// Sanitize the IP address
+		$target = escapeshellarg($target);
 
 		// Determine OS and execute the ping command.
 		if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
@@ -30,7 +27,7 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 		$html .= "<pre>{$cmd}</pre>";
 	}
 	else {
-		// Ops. Let the user name theres a mistake
+		// Ops. Let the user know there's a mistake
 		$html .= '<pre>ERROR: You have entered an invalid IP.</pre>';
 	}
 }
