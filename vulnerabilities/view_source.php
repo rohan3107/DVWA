@@ -9,9 +9,8 @@ $page = dvwaPageNewGrab();
 $page[ 'title' ] .= 'Source' . $page[ 'title_separator' ].$page[ 'title' ];
 
 if (array_key_exists ("id", $_GET) && array_key_exists ("security", $_GET)) {
-	$id       = $_GET[ 'id' ];
-	$security = $_GET[ 'security' ];
-
+	$id       = preg_replace('/[^-a-zA-Z0-9_]/', '', $_GET[ 'id' ]);
+	$security = preg_replace('/[^-a-zA-Z0-9_]/', '', $_GET[ 'security' ]);
 
 	switch ($id) {
 		case "fi" :
@@ -101,3 +100,4 @@ if (array_key_exists ("id", $_GET) && array_key_exists ("security", $_GET)) {
 dvwaSourceHtmlEcho( $page );
 
 ?>
+
